@@ -1,0 +1,7 @@
+pval,effect_size,typeA,typeB
+.02,.03,c,b
+.03,.04,b,c
+.06,.001,b,c
+.01,.004,c,c
+.014,.001,b,b
+.09,.09,c,b
