@@ -1,13 +1,7 @@
 """Helper functions.
 """
 
-from collections import Counter
 import random
-from pprint import pprint
-import statistics
-
-
-random.seed()
 
 
 def choice(population, weights):
