@@ -3,8 +3,10 @@
 
 from argparse import ArgumentParser
 from pathlib import Path
-import random
 import shutil
+
+
+from utils import choices
 
 
 # The number of examples in each subset
@@ -33,10 +35,10 @@ def create_training_splits(train_file: str) -> None:
         size_path.mkdir()
 
         for i in range(n_docs_per_size):
-            idx = set(random.sample(range(size), size))
-            selected = [l for i, l in enumerate(lines) if i in idx]
+            idx = choices(list(range(len(lines))), [1 for i in range(len(lines))], k=size)
+            selected = [lines[i] for i in idx]
 
-            with open(size_path / f"{i}.txt", "w") as f:
+            with open(size_path / f"train{i+1}.txt", "w") as f:
                 f.writelines(selected)
 
 
