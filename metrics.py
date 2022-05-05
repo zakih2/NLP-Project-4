@@ -23,7 +23,7 @@ def fscore(
         Value such that recall is beta-times more weighted than precision,
             by default 1.
     zero_division : int, optional
-        Value to return when all predictions and all ground truth labels are 
+        Value to return when all predictions and all ground truth labels are
             negative, either 0 or 1, by default 0.
 
     Returns

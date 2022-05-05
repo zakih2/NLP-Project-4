@@ -25,7 +25,6 @@ def main():
     f = fscore(preds, y_test)
 
     print(f)
-    print(a)
 
 
 if __name__ == "__main__":

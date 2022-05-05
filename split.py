@@ -35,7 +35,9 @@ def create_training_splits(train_file: str) -> None:
         size_path.mkdir()
 
         for i in range(n_docs_per_size):
-            idx = choices(list(range(len(lines))), [1 for i in range(len(lines))], k=size)
+            idx = choices(
+                list(range(len(lines))), [1 for i in range(len(lines))], k=size
+            )
             selected = [lines[i] for i in idx]
 
             with open(size_path / f"train{i+1}.txt", "w") as f:
