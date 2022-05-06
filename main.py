@@ -1,8 +1,6 @@
 """Driving file to produce deliverables as needed.
 """
 
-from sklearn.utils import shuffle
-
 from metrics import fscore
 from naive_bayes import NaiveBayesClassifier
 
@@ -29,8 +27,7 @@ def get_x_y(path: str) -> tuple:
 
 
 def main() -> None:
-    """Main function.
-    """
+    """Main function."""
 
     x_train, y_train = get_x_y("./train.txt")
     x_test, y_test = get_x_y("./test.txt")
