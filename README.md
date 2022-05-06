@@ -1,7 +1,7 @@
 # Deliverables
 
 - D1: README.md
-- D2: ./train.txt, ./test.txt, ./trainingSets/
+- D2: ./trainMaster.txt, ./testMaster.txt, ./trainingSets/
 - D3: ./output.csv
 - D4: ./plot1.png, ./plot2.png
 - D5: report.pdf
@@ -26,12 +26,12 @@ python3 preprocess.py --data-path=<data_file> --train-path=<train_file> --test-p
 
 where
 - <data_file> is a Unix-style path to the fulldataLabeled.txt source file, e.g., ./fulldataLabeled.txt
-- <train_file> is a Unix-style path to the desired train file, e.g., ./train.txt
-- <test_file> is a Unix-style path to the desired test file, e.g., ./test.txt
+- <train_file> is a Unix-style path to the desired train file, e.g., ./trainMaster.txt
+- <test_file> is a Unix-style path to the desired test file, e.g., ./testMaster.txt
 
 For example,
 ```console
-python3 preprocess.py --data-file=./fulldataLabeled.txt --train-file=./train.txt --test-file=./test.txt
+python3 preprocess.py --data-file=./fulldataLabeled.txt --train-file=./trainMaster.txt --test-file=./testMaster.txt
 ```
 
 You can also run this program without command line arguments. For example,
@@ -41,8 +41,8 @@ python3 preprocess.py
 
 In this scenario, the following default arguments will be used
 - <data_file>="./fulldataLabeled.txt"
-- <train_file>="./train.txt"
-- <test_file>"./test.txt"
+- <train_file>="./trainMaster.txt"
+- <test_file>"./testMaster.txt"
 
 For help with this program,
 ```console
@@ -57,11 +57,11 @@ python3 split.py train-file=<train_file>
 ```
 
 where
-- <train_file> is a Unix-style path to the desired train file, e.g., ./train.txt
+- <train_file> is a Unix-style path to the desired train file, e.g., ./trainMaster.txt
 
 For example,
 ```console
-python3 split.py --train-file=./train.txt
+python3 split.py --train-file=./trainMaster.txt
 ```
 
 You can also run this program without command line arguments. For example,
@@ -70,7 +70,7 @@ python3 split.py
 ```
 
 In this scenario, the following default arguments will be used
-- <train_file>="./train.txt"
+- <train_file>="./trainMaster.txt"
 
 For help with this program,
 ```console

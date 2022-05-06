@@ -1,5 +1,5 @@
 ./env/*
 ./vscode/*
 ./trainingSets/*
-./test.txt
-./train.txt
+./testMaster.txt
+./trainMaster.txt

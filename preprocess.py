@@ -58,13 +58,13 @@ if __name__ == "__main__":
     parser.add_argument(
         "--train-file",
         action="store",
-        default="train.txt",
+        default="trainMaster.txt",
         help="Unix-style path to the trainMaster.txt file.",
     )
     parser.add_argument(
         "--test-file",
         action="store",
-        default="test.txt",
+        default="testMaster.txt",
         help="Unix-style path to the testMaster.txt file.",
     )
 

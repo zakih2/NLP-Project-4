@@ -32,7 +32,7 @@ def pval_vs_effect_basic(input_file: str, output_file: str) -> None:
     pvals = df["pval"].to_numpy() - 1
     effect_sizes = df["effect_size"].to_numpy()
 
-    plt.scatter(pvals, effect_sizes, marker="x", color="black")
+    plt.scatter(effect_sizes, pvals, marker="x", color="black")
     plt.title("1-pvalue vs effect size")
     plt.ylabel("1-pvalue")
     plt.xlabel("Effect size")
@@ -60,11 +60,11 @@ def pval_vs_effect_system(input_file: str, output_file: str) -> None:
     # Plot the points which correspond to the same systems
     _pvals = [p for i, p in enumerate(pvals) if same_system[i]]
     _effect_sizes = [p for i, p in enumerate(effect_sizes) if same_system[i]]
-    plt.scatter(_pvals, _effect_sizes, marker="x", color="blue", label="Same systems")
+    plt.scatter(_effect_sizes, _pvals, marker="x", color="blue", label="Same systems")
     # Plot the points which correspond to the different systems
     _pvals = [p for i, p in enumerate(pvals) if not same_system[i]]
     _effect_sizes = [p for i, p in enumerate(effect_sizes) if not same_system[i]]
-    plt.scatter(_pvals, _effect_sizes, marker="o", color="red", label="Diff systems")
+    plt.scatter(_effect_sizes, _pvals, marker="o", color="red", label="Diff systems")
 
     plt.title("1-pvalue vs effect size")
     plt.ylabel("1-pvalue")
