@@ -20,13 +20,16 @@ import math
 import re
 
 
-def sanitize(text: str) -> str:
+def sanitize(text: str, mode: str) -> str:
     """Santiize the text to prepare it for learning.
 
     Parameters
     ----------
     text : str
         Text to be sanitized.
+
+    mode : str
+        count/binary modes for T4/T5
 
     Returns
     -------
@@ -39,6 +42,16 @@ def sanitize(text: str) -> str:
     text = re.sub("[^a-zA-Z\. ]+", "", text)
     text = re.sub("[\s]{2,}", " ", text)
     text = text.strip()
+
+    split_text = text.split()
+    types = set()
+    if mode == "binary":
+        for word in split_text:
+            types.add(word)
+
+    text = ""
+    for word in types:
+        text += " " + word
 
     return text
 
@@ -121,7 +134,7 @@ class NaiveBayesClassifier:
         self.p_w_neg = None
         self.p_w_pos = None
 
-    def fit(self, x: list, y: list) -> NaiveBayesClassifier:
+    def fit(self, x: list, y: list, mode: str) -> NaiveBayesClassifier:
         """Fit the classifier on training data.
 
         Parameters
@@ -143,7 +156,7 @@ class NaiveBayesClassifier:
         self.p_pos = class_dist[1] / len(y)
 
         # Preprocess the training text
-        x = [sanitize(x_i) for x_i in x]
+        x = [sanitize(x_i, mode) for x_i in x]
 
         # Extract the vocabulary
         vocab = set([word for x_i in x for word in x_i.split()])
@@ -165,7 +178,7 @@ class NaiveBayesClassifier:
 
         return self
 
-    def predict(self, x: list) -> list:
+    def predict(self, x: list, mode: str) -> list:
         """Predict the class membership for novel testing data.
 
         Parameters
@@ -187,16 +200,23 @@ class NaiveBayesClassifier:
         if any(x is None for x in (self.p_neg, self.p_pos, self.p_w_neg, self.p_w_pos)):
             raise ValueError("The classifier has not been fitted yet.")
 
-        x = [sanitize(x_i) for x_i in x]
+        x = [sanitize(x_i, mode) for x_i in x]
 
         y_hat = []
         for x_i in x:
-            neg = self.p_neg * math.prod(
-                self.p_w_neg[word] for word in x_i.split() if word in self.p_w_neg
+
+            neg = math.log2(self.p_neg) + sum(
+                math.log2(self.p_w_neg[word] for word in x_i.split() if word in self.p_w_neg)
             )
-            pos = self.p_neg * math.prod(
-                self.p_w_pos[word] for word in x_i.split() if word in self.p_w_pos
+
+            neg = math.exp2(neg)
+
+            pos = math.log2(self.p_neg) + sum(
+                math.log2(self.p_w_pos[word] for word in x_i.split() if word in self.p_w_pos)
             )
+
+            pos = math.exp2(pos)
+
             y_hat.append(1 if pos > neg else 0)
 
         return y_hat
