@@ -20,16 +20,15 @@ import math
 import re
 
 
-def sanitize(text: str, mode: str) -> str:
+def sanitize(text: str, binary: bool) -> str:
     """Santiize the text to prepare it for learning.
 
     Parameters
     ----------
     text : str
         Text to be sanitized.
-
-    mode : str
-        count/binary modes for T4/T5
+    binary : bool
+        If true, removes non-unique tokens.
 
     Returns
     -------
@@ -43,15 +42,8 @@ def sanitize(text: str, mode: str) -> str:
     text = re.sub("[\s]{2,}", " ", text)
     text = text.strip()
 
-    split_text = text.split()
-    types = set()
-    if mode == "binary":
-        for word in split_text:
-            types.add(word)
-
-    text = ""
-    for word in types:
-        text += " " + word
+    if binary:
+        text = " ".join(set(text.split()))
 
     return text
 
@@ -84,11 +76,7 @@ class NaiveBayesClassifier:
     Attributes
     ----------
     mode : str
-        The mode of feature extraction for the classifier, one of "count"
-        or "binary". If "count", the classifier will count the number of times
-        each word occurs in the training data. If "binary", the classifier
-        considers words that occur in the training data many times as only
-        occuring once.
+        If true, only considers binary features.
     delta : float
         A smoothing parameter.
     p_neg : float
@@ -113,28 +101,24 @@ class NaiveBayesClassifier:
     ... [1, 0]
     """
 
-    def __init__(self, mode: str = "count", delta: float = 1) -> None:
+    def __init__(self, binary: bool = False, delta: float = 1) -> None:
         """Create a classifier.
 
         Parameters
         ----------
-        mode : str, optional
-            The mode of feature extraction for the classifier, one of "count"
-            or "binary", by default "count". If "count", the classifier will
-            count the number of times each word occurs in the training data.
-            If "binary", the classifier considers words that occur in the
-            training data many times as only occuring once.
+        binary : bool
+            If true, only considers binary features, default False.
         delta : float, optional
             A smoothing parameter., by default 1
         """
-        self.mode = mode
+        self.binary = binary
         self.delta = delta
         self.p_neg = None
         self.p_pos = None
         self.p_w_neg = None
         self.p_w_pos = None
 
-    def fit(self, x: list, y: list, mode: str) -> NaiveBayesClassifier:
+    def fit(self, x: list, y: list) -> NaiveBayesClassifier:
         """Fit the classifier on training data.
 
         Parameters
@@ -156,7 +140,7 @@ class NaiveBayesClassifier:
         self.p_pos = class_dist[1] / len(y)
 
         # Preprocess the training text
-        x = [sanitize(x_i, mode) for x_i in x]
+        x = [sanitize(x_i, self.binary) for x_i in x]
 
         # Extract the vocabulary
         vocab = set([word for x_i in x for word in x_i.split()])
@@ -178,7 +162,7 @@ class NaiveBayesClassifier:
 
         return self
 
-    def predict(self, x: list, mode: str) -> list:
+    def predict(self, x: list) -> list:
         """Predict the class membership for novel testing data.
 
         Parameters
@@ -200,22 +184,21 @@ class NaiveBayesClassifier:
         if any(x is None for x in (self.p_neg, self.p_pos, self.p_w_neg, self.p_w_pos)):
             raise ValueError("The classifier has not been fitted yet.")
 
-        x = [sanitize(x_i, mode) for x_i in x]
+        x = [sanitize(x_i, self.binary) for x_i in x]
 
         y_hat = []
         for x_i in x:
 
             neg = math.log2(self.p_neg) + sum(
-                math.log2(self.p_w_neg[word] for word in x_i.split() if word in self.p_w_neg)
+                math.log2(self.p_w_neg[word])
+                for word in x_i.split()
+                if word in self.p_w_neg
             )
-
-            neg = math.exp2(neg)
-
             pos = math.log2(self.p_neg) + sum(
-                math.log2(self.p_w_pos[word] for word in x_i.split() if word in self.p_w_pos)
+                math.log2(self.p_w_pos[word])
+                for word in x_i.split()
+                if word in self.p_w_pos
             )
-
-            pos = math.exp2(pos)
 
             y_hat.append(1 if pos > neg else 0)
 

@@ -113,6 +113,11 @@ python3 plotting.py -h
 
 # For Developers
 
+To clone the repository
+```console
+git clone https://github.com/zakih2/NLP-Project-4.git
+```
+
 To pull from the remote
 ```console
 git pull origin main

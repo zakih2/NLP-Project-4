@@ -26,17 +26,22 @@ def get_x_y(path: str) -> tuple:
     return x, y
 
 
-def main(mode: str) -> None:
+def main() -> None:
     """Main function."""
 
     x_train, y_train = get_x_y("./train.txt")
     x_test, y_test = get_x_y("./test.txt")
 
     clf = NaiveBayesClassifier()
-    clf.fit(x_train, y_train, mode)
-    preds = clf.predict(x_test, mode)
+    clf.fit(x_train, y_train)
+    preds = clf.predict(x_test)
     f = fscore(preds, y_test)
+    print(f)
 
+    clf = NaiveBayesClassifier(binary=True)
+    clf.fit(x_train, y_train)
+    preds = clf.predict(x_test)
+    f = fscore(preds, y_test)
     print(f)
 
 
