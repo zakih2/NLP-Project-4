@@ -46,13 +46,8 @@ def get_x_y(path: str) -> tuple:
     return x, y
 
 
-def learn(training_sets_path: str) -> list:
+def learn() -> list:
     """Learn the sixty classifiers.
-
-    Parameters
-    ----------
-    training_sets_path : str
-        Location of the trainingSets directory.
 
     Returns
     -------
@@ -62,7 +57,7 @@ def learn(training_sets_path: str) -> list:
     systems = []
     for size in sizes:
         for i in range(1, n_docs_per_size + 1):
-            path = Path(training_sets_path) / str(size) / f"train{i}.txt"
+            path = Path("./trainingSets") / str(size) / f"train{i}.txt"
             x_train, y_train = get_x_y(path)
 
             clf_count = NaiveBayesClassifier()
@@ -136,7 +131,7 @@ def bootstrap(test_file: str, systems: list) -> None:
                 f.write(line + "\n")
 
 
-def main(training_sets_path: str, test_file: str) -> None:
+def main(test_file: str) -> None:
     """Produce the deliverables.
 
     Parameters
@@ -146,7 +141,7 @@ def main(training_sets_path: str, test_file: str) -> None:
     test_file : str
         Path to the test file.
     """
-    systems = learn(training_sets_path)
+    systems = learn()
     bootstrap(test_file, systems)
 
 
@@ -154,18 +149,12 @@ if __name__ == "__main__":
     parser = ArgumentParser()
 
     parser.add_argument(
-        "--training-sets-path",
-        action="store",
-        default="./trainingSets",
-        help="Unix-style path to the trainingSets directory.",
-    )
-    parser.add_argument(
         "--test-file",
         action="store",
         default="./testMaster.txt",
-        help="Unix-style path to the test file.",
+        help="Unix-style path to the testMaster.txt file.",
     )
 
     args = parser.parse_args()
 
-    main(args.training_sets_path, args.test_file)
+    main(args.test_file)

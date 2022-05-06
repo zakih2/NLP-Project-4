@@ -74,7 +74,35 @@ In this scenario, the following default arguments will be used
 
 For help with this program,
 ```console
-python3 preprocess.py -h
+python3 split.py -h
+```
+
+## Main Learning & Bootstrapping
+
+To run the main program,
+```console
+python3 main.py --test-file=<test_file>
+```
+
+where
+- <test_file> is a Unix-style path to the test file, e.g., ./testMaster.txt
+
+For example,
+```console
+python3 main.py --test-file=./testMaster.txt
+```
+
+You can also run this program without command line arguments. For example,
+```console
+python3 main.py
+```
+
+In this scenario, the following default arguments will be used
+- <test_file>="./testMaster.txt"
+
+For help with this program,
+```console
+python3 main.py -h
 ```
 
 ## Plotting

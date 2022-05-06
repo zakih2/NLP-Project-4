@@ -29,7 +29,7 @@ def pval_vs_effect_basic(input_file: str, output_file: str) -> None:
     """
     df = pd.read_csv(input_file)
 
-    pvals = df["pval"].to_numpy() - 1
+    pvals = 1 - df["pval"].to_numpy()
     effect_sizes = df["effect_size"].to_numpy()
 
     plt.scatter(effect_sizes, pvals, marker="x", color="black")
@@ -53,7 +53,7 @@ def pval_vs_effect_system(input_file: str, output_file: str) -> None:
     """
     df = pd.read_csv(input_file)
 
-    pvals = df["pval"].to_numpy() - 1
+    pvals = 1 - df["pval"].to_numpy()
     effect_sizes = df["effect_size"].to_numpy()
     same_system = [a == b for a, b in zip(df["typeA"], df["typeB"])]
 
