@@ -1,10 +1,6 @@
 """Evaluation metrics for classification systems.
 """
 
-# Values that inicate a positive or negative classification of an example.
-true = 1
-false = 0
-
 
 def fscore(
     predictions: list, labels: list, beta: float = 1, zero_division: int = 0
@@ -13,12 +9,10 @@ def fscore(
 
     Parameters
     ----------
-    predictions : list
-        Predictions made by the classifier, consisting of values of
-            `true` or `false`.
-    labels : list
-        Ground truth labels for the examples, consisting of values of
-            `true` or `false`.
+    predictions : list[int]
+        Predictions made by the classifier, consisting of values of 0 and 1.
+    labels : list[int]
+        Ground truth labels for the examples, consisting of values of 0 and 1.
     beta : float, optional
         Value such that recall is beta-times more weighted than precision,
             by default 1.
@@ -38,7 +32,7 @@ def fscore(
     ValueError
         If zero_division is not 0 or 1.
     ValueError
-        If an element of predictions or labels is not `true` or `false`.
+        If an element of predictions or labels is not 0 or 1.
     """
 
     if len(predictions) != len(labels):
@@ -52,18 +46,18 @@ def fscore(
     tp, fp, fn, tn = 0, 0, 0, 0
 
     for p, l in zip(predictions, labels):
-        if p == true and l == true:
+        if p == 1 and l == 1:
             tp += 1
-        elif p == true and l == false:
+        elif p == 1 and l == 0:
             fp += 1
-        elif p == false and l == true:
+        elif p == 0 and l == 1:
             fn += 1
-        elif p == false and l == false:
+        elif p == 0 and l == 0:
             tn += 1
         else:
             raise ValueError(
                 f"Unexpected value(s) in predictions or labels: {p, l}. "
-                f"Expected either {true} or {false}."
+                f"Expected either {1} or {0}."
             )
 
     if tp == 0:

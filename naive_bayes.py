@@ -1,8 +1,16 @@
 """Multinomial Naive Bayes Classifier for binary text classification tasks.
 
 TODO:
-- Implement binary mode for the classifier, i.e., T5.
-- Use log space for the prediction calculation.
+- Implement binary mode for the classifier, i.e., T5. One way to do this is to
+    add an additional parameter to the santiize function. When this parameter
+    is properly set, the sanitize function can remove non-unique tokens. Then,
+    in both the NaiveBayesClassifier.fit and the NaiveBayesClassifier.predict
+    methods, change the call to sanitize to include the new parameter. When the
+    NaiveBayesClassifier is instantiated with the mode="binary" flag, the new
+    parameter should be set such that the sanitize function will remove
+    duplicates from the string.
+- Use log space for the prediction calculation. To do this, you'll need to
+    modify the NaiveBayesClassifier.predict method.
 """
 
 
